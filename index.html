@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea la Banda Sonora Perfecta - Juego de AIMusicGen.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: #0f0f23;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, rgba(25, 32, 72, 0.9), rgba(76, 29, 149, 0.9));
+            padding: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .logo {
+            width: 60px;
+            height: 60px;
+            background-image: url('https://sfile.chatglm.cn/images-ppt/975c2ce21273.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-right: 15px;
+        }
+        .site-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .site-subtitle {
+            font-size: 16px;
+            color: #e0e0ff;
+            margin-top: 5px;
+        }
+        .header-nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-link {
+            color: #e0e0ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        .nav-link:hover {
+            color: #a78bfa;
+        }
+        .nav-link i {
+            margin-right: 8px;
+        }
+        /* Hero Section */
+        .hero {
+            padding: 60px 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(25, 32, 72, 0.7), rgba(76, 29, 149, 0.7)), url('https://sfile.chatglm.cn/images-ppt/093d3d4c8587.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        .hero-description {
+            font-size: 20px;
+            color: #e0e0ff;
+            margin-bottom: 30px;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #a78bfa;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .cta-button:hover {
+            background-color: #8b5cf6;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(167, 139, 250, 0.3);
+        }
+        /* Game Section */
+        .game-section {
+            padding: 60px 0;
+            background-color: rgba(25, 32, 72, 0.5);
+        }
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #ffffff;
+        }
+        .game-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 0 auto;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+        }
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .game-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #e0e0ff;
+            display: flex;
+            align-items: center;
+        }
+        .game-title i {
+            margin-right: 15px;
+            color: #a78bfa;
+            font-size: 32px;
+        }
+        .game-stats {
+            display: flex;
+            gap: 20px;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(167, 139, 250, 0.2);
+            border-radius: 30px;
+            padding: 8px 16px;
+        }
+        .stat-item i {
+            margin-right: 8px;
+            color: #a78bfa;
+            font-size: 20px;
+        }
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e0e0ff;
+        }
+        .level-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .level-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .level-dot.active {
+            background-color: #a78bfa;
+            transform: scale(1.2);
+        }
+        .level-dot.completed {
+            background-color: #4ade80;
+        }
+        .game-area {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+        .scenario-panel {
+            flex: 1;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+        .scenario-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #e0e0ff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .scenario-title i {
+            margin-right: 10px;
+            color: #a78bfa;
+            font-size: 24px;
+        }
+        .scenario-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex-grow: 1;
+        }
+        .scenario-image {
+            width: 100%;
+            height: 200px;
+            background-color: rgba(167, 139, 250, 0.1);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .scenario-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .scenario-description {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #c0c0ff;
+        }
+        .scenario-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .scenario-tag {
+            background-color: rgba(167, 139, 250, 0.2);
+            color: #e0e0ff;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .options-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .options-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #e0e0ff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .options-title i {
+            margin-right: 10px;
+            color: #a78bfa;
+            font-size: 24px;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex-grow: 1;
+        }
+        .option-category {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+        }
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e0e0ff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .category-title i {
+            margin-right: 8px;
+            color: #a78bfa;
+            font-size: 20px;
+        }
+        .option-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .option-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 16px;
+            color: #e0e0ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        .option-button:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        .option-button.selected {
+            background-color: rgba(167, 139, 250, 0.3);
+            border-color: rgba(167, 139, 250, 0.6);
+        }
+        .option-button i {
+            margin-right: 6px;
+            font-size: 16px;
+            color: #a78bfa;
+        }
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .control-button {
+            background-color: rgba(167, 139, 250, 0.2);
+            border: 1px solid #a78bfa;
+            border-radius: 30px;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #e0e0ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        .control-button:hover {
+            background-color: rgba(167, 139, 250, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(167, 139, 250, 0.4);
+        }
+        .control-button.primary {
+            background-color: #a78bfa;
+            border-color: #a78bfa;
+        }
+        .control-button.primary:hover {
+            background-color: #8b5cf6;
+        }
+        .control-button i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        .hint-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(167, 139, 250, 0.2);
+            border: 1px solid #a78bfa;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .hint-button:hover {
+            background-color: rgba(167, 139, 250, 0.3);
+            transform: scale(1.1);
+        }
+        .hint-button i {
+            color: #a78bfa;
+            font-size: 24px;
+        }
+        .hint-tooltip {
+            position: absolute;
+            bottom: 80px;
+            right: 20px;
+            background-color: #1e1b4b;
+            border-radius: 8px;
+            padding: 15px;
+            width: 250px;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .hint-tooltip.show {
+            display: block;
+        }
+        .hint-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e0e0ff;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        .hint-title i {
+            margin-right: 8px;
+            color: #a78bfa;
+            font-size: 18px;
+        }
+        .hint-text {
+            font-size: 14px;
+            color: #c0c0ff;
+            line-height: 1.4;
+        }
+        .feedback-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            border-radius: 16px;
+        }
+        .feedback-content {
+            background-color: #1e1b4b;
+            border-radius: 16px;
+            padding: 30px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .feedback-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        .feedback-icon.success {
+            color: #4ade80;
+        }
+        .feedback-icon.error {
+            color: #f87171;
+        }
+        .feedback-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #e0e0ff;
+        }
+        .feedback-message {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #c0c0ff;
+            margin-bottom: 25px;
+        }
+        .feedback-button {
+            background-color: #a78bfa;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .feedback-button:hover {
+            background-color: #8b5cf6;
+            transform: translateY(-2px);
+        }
+        /* How to Play Section */
+        .how-to-play {
+            padding: 60px 0;
+            background-color: rgba(25, 32, 72, 0.3);
+        }
+        .steps-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .step {
+            flex: 1;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .step:hover {
+            transform: translateY(-5px);
+        }
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background-color: #a78bfa;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+        .step-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #e0e0ff;
+            margin-bottom: 15px;
+        }
+        .step-description {
+            font-size: 16px;
+            color: #c0c0ff;
+        }
+        /* About Section */
+        .about {
+            padding: 60px 0;
+            background-color: rgba(25, 32, 72, 0.5);
+        }
+        .about-content {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+        .about-text {
+            flex: 1;
+        }
+        .about-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        .about-description {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #e0e0ff;
+            margin-bottom: 30px;
+        }
+        .about-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            background-color: rgba(167, 139, 250, 0.2);
+            border-radius: 30px;
+            padding: 8px 16px;
+        }
+        .feature i {
+            margin-right: 8px;
+            color: #a78bfa;
+            font-size: 20px;
+        }
+        .feature-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e0e0ff;
+        }
+        .about-image {
+            flex: 1;
+            max-width: 500px;
+        }
+        .about-image img {
+            width: 100%;
+            border-radius: 12px;
+        }
+        /* Footer */
+        footer {
+            background-color: rgba(25, 32, 72, 0.9);
+            padding: 40px 0;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+        }
+        .footer-section {
+            flex: 1;
+        }
+        .footer-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #e0e0ff;
+        }
+        .footer-links {
+            list-style: none;
+        }
+        .footer-link {
+            margin-bottom: 10px;
+        }
+        .footer-link a {
+            color: #c0c0ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        .footer-link a:hover {
+            color: #a78bfa;
+        }
+        .footer-link a i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #c0c0ff;
+            font-size: 14px;
+        }
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .game-area {
+                flex-direction: column;
+            }
+            .about-content {
+                flex-direction: column;
+            }
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 36px;
+            }
+            .steps-container {
+                flex-direction: column;
+            }
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo"></div>
+                    <div>
+                        <h1 class="site-title">AIMusicGen.ai</h1>
+                        <p class="site-subtitle">Crea música con IA en segundos</p>
+                    </div>
+                </div>
+                <nav class="header-nav">
+                    <a href="#game" class="nav-link"><i class="material-icons">sports_esports</i>Jugar</a>
+                    <a href="#how-to-play" class="nav-link"><i class="material-icons">help_outline</i>Cómo Jugar</a>
+                    <a href="#about" class="nav-link"><i class="material-icons">info</i>Acerca de</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Crea la Banda Sonora Perfecta</h1>
+                <p class="hero-description">Demuestra tu habilidad para seleccionar la música adecuada para diferentes escenarios usando la tecnología de AIMusicGen.ai</p>
+                <a href="#game" class="cta-button">Comenzar a Jugar</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Section -->
+    <section id="game" class="game-section">
+        <div class="container">
+            <h2 class="section-title">Juego Interactivo</h2>
+            <div class="game-container">
+                <div class="game-header">
+                    <h3 class="game-title">
+                        <i class="material-icons">music_note</i>
+                        Crea la Banda Sonora Perfecta
+                    </h3>
+                    <div class="game-stats">
+                        <div class="stat-item">
+                            <i class="material-icons">grade</i>
+                            <span class="stat-value">Puntuación: <span id="score">0</span></span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="material-icons">flag</i>
+                            <span class="stat-value">Nivel: <span id="level">1</span>/8</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="level-indicator">
+                    <div class="level-dot active" id="dot1"></div>
+                    <div class="level-dot" id="dot2"></div>
+                    <div class="level-dot" id="dot3"></div>
+                    <div class="level-dot" id="dot4"></div>
+                    <div class="level-dot" id="dot5"></div>
+                    <div class="level-dot" id="dot6"></div>
+                    <div class="level-dot" id="dot7"></div>
+                    <div class="level-dot" id="dot8"></div>
+                </div>
+                
+                <div class="game-area">
+                    <div class="scenario-panel">
+                        <h4 class="scenario-title">
+                            <i class="material-icons">movie</i>
+                            Escenario
+                        </h4>
+                        <div class="scenario-content">
+                            <div class="scenario-image">
+                                <img src="https://sfile.chatglm.cn/images-ppt/aac35f4d2e20.jpg" alt="Escenario del juego">
+                            </div>
+                            <p class="scenario-description" id="scenarioDescription">
+                                Estás creando la banda sonora para un video de aventuras en la montaña. La escena muestra a un escalador alcanzando la cima al amanecer.
+                            </p>
+                            <div class="scenario-tags">
+                                <span class="scenario-tag">Aventura</span>
+                                <span class="scenario-tag">Logro</span>
+                                <span class="scenario-tag">Naturaleza</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="options-panel">
+                        <h4 class="options-title">
+                            <i class="material-icons">tune</i>
+                            Opciones de Música
+                        </h4>
+                        <div class="options-container">
+                            <div class="option-category">
+                                <h5 class="category-title">
+                                    <i class="material-icons">category</i>
+                                    Género Musical
+                                </h5>
+                                <div class="option-buttons" id="genreOptions">
+                                    <button class="option-button" data-genre="pop">
+                                        <i class="material-icons">headphones</i>Pop
+                                    </button>
+                                    <button class="option-button" data-genre="rock">
+                                        <i class="material-icons">electric_guitar</i>Rock
+                                    </button>
+                                    <button class="option-button" data-genre="classical">
+                                        <i class="material-icons">piano</i>Clásica
+                                    </button>
+                                    <button class="option-button" data-genre="electronic">
+                                        <i class="material-icons">surround_sound</i>Electrónica
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="option-category">
+                                <h5 class="category-title">
+                                    <i class="material-icons">mood</i>
+                                    Estado de Ánimo
+                                </h5>
+                                <div class="option-buttons" id="moodOptions">
+                                    <button class="option-button" data-mood="energetic">
+                                        <i class="material-icons">bolt</i>Energético
+                                    </button>
+                                    <button class="option-button" data-mood="calm">
+                                        <i class="material-icons">spa</i>Tranquilo
+                                    </button>
+                                    <button class="option-button" data-mood="dramatic">
+                                        <i class="material-icons">theater_comedy</i>Dramático
+                                    </button>
+                                    <button class="option-button" data-mood="uplifting">
+                                        <i class="material-icons">emoji_emotions</i>Inspirador
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="option-category">
+                                <h5 class="category-title">
+                                    <i class="material-icons">speed</i>
+                                    Tempo
+                                </h5>
+                                <div class="option-buttons" id="tempoOptions">
+                                    <button class="option-button" data-tempo="slow">
+                                        <i class="material-icons">slow_motion_video</i>Lento
+                                    </button>
+                                    <button class="option-button" data-tempo="medium">
+                                        <i class="material-icons">play_arrow</i>Medio
+                                    </button>
+                                    <button class="option-button" data-tempo="fast">
+                                        <i class="material-icons">fast_forward</i>Rápido
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="option-category">
+                                <h5 class="category-title">
+                                    <i class="material-icons">mic</i>
+                                    Voces
+                                </h5>
+                                <div class="option-buttons" id="vocalOptions">
+                                    <button class="option-button" data-vocal="male">
+                                        <i class="material-icons">man</i>Voz Masculina
+                                    </button>
+                                    <button class="option-button" data-vocal="female">
+                                        <i class="material-icons">woman</i>Voz Femenina
+                                    </button>
+                                    <button class="option-button" data-vocal="instrumental">
+                                        <i class="material-icons">music_off</i>Instrumental
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-controls">
+                    <button class="control-button" onclick="resetSelection()">
+                        <i class="material-icons">refresh</i>
+                        Reiniciar Selección
+                    </button>
+                    <button class="control-button primary" onclick="checkAnswer()">
+                        <i class="material-icons">check_circle</i>
+                        Verificar Respuesta
+                    </button>
+                </div>
+                
+                <div class="hint-button" onclick="toggleHint()">
+                    <i class="material-icons">lightbulb</i>
+                </div>
+                
+                <div class="hint-tooltip" id="hintTooltip">
+                    <h5 class="hint-title">
+                        <i class="material-icons">tips_and_updates</i>
+                        Pista
+                    </h5>
+                    <p class="hint-text" id="hintText">
+                        Piensa en el tipo de emoción que quieres transmitir. Para escenas de logro y superación, una música dramática con tempo medio suele funcionar bien.
+                    </p>
+                </div>
+                
+                <div class="feedback-overlay" id="feedbackOverlay">
+                    <div class="feedback-content">
+                        <i class="material-icons feedback-icon" id="feedbackIcon">check_circle</i>
+                        <h3 class="feedback-title" id="feedbackTitle">¡Excelente!</h3>
+                        <p class="feedback-message" id="feedbackMessage">
+                            Has seleccionado la banda sonora perfecta para este escenario. La música clásica dramática con tempo medio y sin voces complementa perfectamente la escena de logro y superación.
+                        </p>
+                        <button class="feedback-button" onclick="nextLevel()">Siguiente Nivel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Play Section -->
+    <section id="how-to-play" class="how-to-play">
+        <div class="container">
+            <h2 class="section-title">Cómo Jugar</h2>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Lee el Escenario</h3>
+                    <p class="step-description">Analiza cuidadosamente la descripción del escenario y las etiquetas para entender qué tipo de música necesitas.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Selecciona Opciones</h3>
+                    <p class="step-description">Elige una opción en cada categoría: género musical, estado de ánimo, tempo y tipo de voz.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Verifica tu Respuesta</h3>
+                    <p class="step-description">Haz clic en "Verificar Respuesta" para ver si has seleccionado la banda sonora perfecta.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">Acerca de AIMusicGen.ai</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3 class="about-title">Generación de Música con IA</h3>
+                    <p class="about-description">
+                        AIMusicGen.ai es una plataforma revolucionaria que utiliza inteligencia artificial para transformar texto o letras en canciones completas de alta calidad en menos de un minuto. Con soporte para múltiples idiomas y música 100% libre de regalías, es la herramienta perfecta para creadores de contenido, músicos y entusiastas.
+                    </p>
+                    <div class="about-features">
+                        <div class="feature">
+                            <i class="material-icons">speed</i>
+                            <span class="feature-text">Generación en menos de 1 minuto</span>
+                        </div>
+                        <div class="feature">
+                            <i class="material-icons">public</i>
+                            <span class="feature-text">Soporte multiidioma</span>
+                        </div>
+                        <div class="feature">
+                            <i class="material-icons">copyright</i>
+                            <span class="feature-text">Música libre de regalías</span>
+                        </div>
+                        <div class="feature">
+                            <i class="material-icons">tune</i>
+                            <span class="feature-text">Personalización avanzada</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://sfile.chatglm.cn/images-ppt/6aa24817bc83.svg" alt="AIMusicGen.ai Technology">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 class="footer-title">Recursos</h4>
+                    <ul class="footer-links">
+                        <li class="footer-link">
+                            <a href="https://aimusicgen.ai" target="_blank">
+                                <i class="material-icons">language</i>
+                                Sitio Web Oficial
+                            </a>
+                        </li>
+                        <li class="footer-link">
+                            <a href="https://aimusicgen.ai/tutorial" target="_blank">
+                                <i class="material-icons">school</i>
+                                Tutoriales
+                            </a>
+                        </li>
+                        <li class="footer-link">
+                            <a href="https://aimusicgen.ai/blog" target="_blank">
+                                <i class="material-icons">article</i>
+                                Blog
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Comunidad</h4>
+                    <ul class="footer-links">
+                        <li class="footer-link">
+                            <a href="https://aimusicgen.ai/community" target="_blank">
+                                <i class="material-icons">forum</i>
+                                Foro de Discusión
+                            </a>
+                        </li>
+                        <li class="footer-link">
+                            <a href="https://discord.gg/aimusicgen" target="_blank">
+                                <i class="material-icons">discord</i>
+                                Servidor de Discord
+                            </a>
+                        </li>
+                        <li class="footer-link">
+                            <a href="https://twitter.com/aimusicgen" target="_blank">
+                                <i class="material-icons">alternate_email</i>
+                                Twitter
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Soporte</h4>
+                    <ul class="footer-links">
+                        <li class="footer-link">
+                            <a href="https://aimusicgen.ai/faq" target="_blank">
+                                <i class="material-icons">help_outline</i>
+                                Preguntas Frecuentes
+                            </a>
+                        </li>
+                        <li class="footer-link">
+                            <a href="https://aimusicgen.ai/contact" target="_blank">
+                                <i class="material-icons">contact_support</i>
+                                Contacto
+                            </a>
+                        </li>
+                        <li class="footer-link">
+                            <a href="https://aimusicgen.ai/terms" target="_blank">
+                                <i class="material-icons">gavel</i>
+                                Términos de Servicio
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2024 AIMusicGen.ai. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Datos del juego - ahora con 8 niveles
+        const gameData = [
+            {
+                level: 1,
+                scenario: "Estás creando la banda sonora para un video de aventuras en la montaña. La escena muestra a un escalador alcanzando la cima al amanecer.",
+                image: "https://sfile.chatglm.cn/images-ppt/aac35f4d2e20.jpg",
+                tags: ["Aventura", "Logro", "Naturaleza"],
+                correctAnswer: {
+                    genre: "classical",
+                    mood: "dramatic",
+                    tempo: "medium",
+                    vocal: "instrumental"
+                },
+                hint: "Piensa en el tipo de emoción que quieres transmitir. Para escenas de logro y superación, una música dramática con tempo medio suele funcionar bien.",
+                feedback: {
+                    success: "¡Excelente! Has seleccionado la banda sonora perfecta para este escenario. La música clásica dramática con tempo medio y sin voces complementa perfectamente la escena de logro y superación.",
+                    error: "No es la mejor opción. Para una escena de logro y superación al amanecer, una música clásica dramática con tempo medio y sin voces sería más adecuada."
+                }
+            },
+            {
+                level: 2,
+                scenario: "Necesitas música para un comercial de un coche eléctrico moderno. El video muestra el vehículo conduciendo por una ciudad futurista de noche.",
+                image: "https://sfile.chatglm.cn/images-ppt/48356bf086a2.png",
+                tags: ["Tecnología", "Futurista", "Urbano"],
+                correctAnswer: {
+                    genre: "electronic",
+                    mood: "energetic",
+                    tempo: "medium",
+                    vocal: "instrumental"
+                },
+                hint: "Para productos tecnológicos y futuristas, la música electrónica suele ser la mejor opción. Piensa en algo que suene moderno y enérgico.",
+                feedback: {
+                    success: "¡Perfecto! La música electrónica energética con tempo medio y sin voces crea exactamente la atmósfera futurista y tecnológica que necesita este comercial.",
+                    error: "No es la mejor opción. Para un comercial de un coche eléctrico moderno en una ciudad futurista, la música electrónica energética con tempo medio y sin voces sería más adecuada."
+                }
+            },
+            {
+                level: 3,
+                scenario: "Estás produciendo la banda sonora para una escena romántica en una película. Los protagonistas están teniendo su primera cita en un café acogedor.",
+                image: "https://sfile.chatglm.cn/images-ppt/a4c65b606f4b.png",
+                tags: ["Romance", "Intimidad", "Emocional"],
+                correctAnswer: {
+                    genre: "pop",
+                    mood: "calm",
+                    tempo: "slow",
+                    vocal: "female"
+                },
+                hint: "Para escenas románticas e íntimas, una música suave y tranquila suele funcionar mejor. Piensa en algo que cree una atmósfera cálida y acogedora.",
+                feedback: {
+                    success: "¡Magnífico! La música pop tranquila con tempo lento y voz femenina crea la atmósfera romántica perfecta para esta primera cita.",
+                    error: "No es la mejor opción. Para una escena romántica en un café acogedor, una música pop tranquila con tempo lento y voz femenina sería más adecuada."
+                }
+            },
+            {
+                level: 4,
+                scenario: "Estás creando música para un documental sobre vida marina. La escena muestra arrecifes de coral con peces tropicales nadando en aguas cristalinas.",
+                image: "https://sfile.chatglm.cn/images-ppt/7e0adbeed679.jpg",
+                tags: ["Naturaleza", "Documental", "Marino"],
+                correctAnswer: {
+                    genre: "classical",
+                    mood: "calm",
+                    tempo: "slow",
+                    vocal: "instrumental"
+                },
+                hint: "Para documentales sobre naturaleza, una música tranquila y relajante suele funcionar mejor. Piensa en algo que transmita serenidad y asombro.",
+                feedback: {
+                    success: "¡Excelente elección! La música clásica tranquila con tempo lento y sin voces crea la atmósfera perfecta para mostrar la belleza del mundo marino.",
+                    error: "No es la mejor opción. Para un documental sobre vida marina, una música clásica tranquila con tempo lento y sin voces sería más adecuada."
+                }
+            },
+            {
+                level: 5,
+                scenario: "Necesitas música para un videojuego de acción. La escena muestra al personaje principal luchando contra enemigos en una ciudad en ruinas.",
+                image: "https://sfile.chatglm.cn/images-ppt/a7a71f3f5bc8.jpg",
+                tags: ["Videojuego", "Acción", "Combate"],
+                correctAnswer: {
+                    genre: "rock",
+                    mood: "energetic",
+                    tempo: "fast",
+                    vocal: "instrumental"
+                },
+                hint: "Para videojuegos de acción, una música enérgica y rápida suele funcionar mejor. Piensa en algo que aumente la adrenalina del jugador.",
+                feedback: {
+                    success: "¡Perfecto! La música rock enérgica con tempo rápido y sin voces crea exactamente la atmósfera de acción y adrenalina que necesita este videojuego.",
+                    error: "No es la mejor opción. Para un videojuego de acción, una música rock enérgica con tempo rápido y sin voces sería más adecuada."
+                }
+            },
+            {
+                level: 6,
+                scenario: "Estás produciendo la banda sonora para un podcast de ciencia ficción. El episodio trata sobre exploración espacial y descubrimiento de nuevos planetas.",
+                image: "https://sfile.chatglm.cn/images-ppt/65e096306441.png",
+                tags: ["Podcast", "Ciencia Ficción", "Espacio"],
+                correctAnswer: {
+                    genre: "electronic",
+                    mood: "dramatic",
+                    tempo: "slow",
+                    vocal: "male"
+                },
+                hint: " Para podcasts de ciencia ficción, una música dramática y lenta suele funcionar mejor. Piensa en algo que cree una atmósfera misteriosa y futurista.",
+                feedback: {
+                    success: "¡Excelente! La música electrónica dramática con tempo lento y voz masculina crea la atmósfera perfecta para un podcast de ciencia ficción sobre exploración espacial.",
+                    error: "No es la mejor opción. Para un podcast de ciencia ficción sobre exploración espacial, una música electrónica dramática con tempo lento y voz masculina sería más adecuada."
+                }
+            },
+            {
+                level: 7,
+                scenario: "Estás creando música para un video de recetas de cocina. El video muestra la preparación de un postre elegante con ingredientes frescos.",
+                image: "https://sfile.chatglm.cn/images-ppt/aac35f4d2e20.jpg",
+                tags: ["Cocina", "Recetas", "Postre"],
+                correctAnswer: {
+                    genre: "pop",
+                    mood: "uplifting",
+                    tempo: "medium",
+                    vocal: "female"
+                },
+                hint: "Para videos de cocina, una música alegre y animada suele funcionar mejor. Piensa en algo que cree una atmósfera positiva y estimulante.",
+                feedback: {
+                    success: "¡Magnífico! La música pop alegre con tempo medio y voz femenina crea la atmósfera perfecta para un video de recetas de cocina.",
+                    error: "No es la mejor opción. Para un video de recetas de cocina, una música pop alegre con tempo medio y voz femenina sería más adecuada."
+                }
+            },
+            {
+                level: 8,
+                scenario: "Estás produciendo música para un video de ejercicios de yoga. La escena muestra personas practicando posturas relajantes en un jardín tranquilo al amanecer.",
+                image: "https://sfile.chatglm.cn/images-ppt/4c3a6a21f368.jpg",
+                tags: ["Yoga", "Relajación", "Ejercicio"],
+                correctAnswer: {
+                    genre: "classical",
+                    mood: "calm",
+                    tempo: "slow",
+                    vocal: "instrumental"
+                },
+                hint: "Para videos de yoga y meditación, una música tranquila y relajante es esencial. Piensa en algo que ayude a concentrarse y relajarse.",
+                feedback: {
+                    success: "¡Perfecto! La música clásica tranquila con tempo lento y sin voces crea la atmósfera ideal para una sesión de yoga relajante.",
+                    error: "No es la mejor opción. Para un video de ejercicios de yoga, una música clásica tranquila con tempo lento y sin voces sería más adecuada."
+                }
+            }
+        ];
+        
+        let currentLevel = 0;
+        let score = 0;
+        let selectedOptions = {
+            genre: null,
+            mood: null,
+            tempo: null,
+            vocal: null
+        };
+        
+        // Inicializar el juego
+        function initGame() {
+            loadLevel(currentLevel);
+            setupEventListeners();
+        }
+        
+        // Cargar un nivel
+        function loadLevel(levelIndex) {
+            const level = gameData[levelIndex];
+            document.getElementById('level').textContent = levelIndex + 1;
+            document.getElementById('scenarioDescription').textContent = level.scenario;
+            document.querySelector('.scenario-image img').src = level.image;
+            
+            // Actualizar etiquetas del escenario
+            const tagsContainer = document.querySelector('.scenario-tags');
+            tagsContainer.innerHTML = '';
+            level.tags.forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'scenario-tag';
+                tagElement.textContent = tag;
+                tagsContainer.appendChild(tagElement);
+            });
+            
+            // Actualizar indicadores de nivel
+            updateLevelIndicators();
+            
+            // Actualizar pista
+            document.getElementById('hintText').textContent = level.hint;
+            
+            // Reiniciar selecciones
+            resetSelection();
+        }
+        
+        // Actualizar indicadores de nivel
+        function updateLevelIndicators() {
+            for (let i = 1; i <= 8; i++) {
+                const dot = document.getElementById(`dot${i}`);
+                dot.classList.remove('active', 'completed');
+                
+                if (i < currentLevel + 1) {
+                    dot.classList.add('completed');
+                } else if (i === currentLevel + 1) {
+                    dot.classList.add('active');
+                }
+            }
+        }
+        
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Opciones de género
+            document.querySelectorAll('#genreOptions .option-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    selectOption('genre', this.dataset.genre);
+                });
+            });
+            
+            // Opciones de estado de ánimo
+            document.querySelectorAll('#moodOptions .option-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    selectOption('mood', this.dataset.mood);
+                });
+            });
+            
+            // Opciones de tempo
+            document.querySelectorAll('#tempoOptions .option-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    selectOption('tempo', this.dataset.tempo);
+                });
+            });
+            
+            // Opciones de voces
+            document.querySelectorAll('#vocalOptions .option-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    selectOption('vocal', this.dataset.vocal);
+                });
+            });
+        }
+        
+        // Seleccionar una opción
+        function selectOption(category, value) {
+            selectedOptions[category] = value;
+            
+            // Actualizar UI
+            document.querySelectorAll(`#${category}Options .option-button`).forEach(button => {
+                button.classList.remove('selected');
+            });
+            
+            document.querySelector(`#${category}Options .option-button[data-${category}="${value}"]`).classList.add('selected');
+        }
+        
+        // Reiniciar selección
+        function resetSelection() {
+            selectedOptions = {
+                genre: null,
+                mood: null,
+                tempo: null,
+                vocal: null
+            };
+            
+            document.querySelectorAll('.option-button').forEach(button => {
+                button.classList.remove('selected');
+            });
+        }
+        
+        // Verificar respuesta
+        function checkAnswer() {
+            const level = gameData[currentLevel];
+            const correctAnswer = level.correctAnswer;
+            
+            // Verificar que todas las opciones estén seleccionadas
+            for (const key in selectedOptions) {
+                if (selectedOptions[key] === null) {
+                    showFeedback(false, "Debes seleccionar una opción en cada categoría antes de verificar tu respuesta.");
+                    return;
+                }
+            }
+            
+            let isCorrect = true;
+            for (const key in correctAnswer) {
+                if (selectedOptions[key] !== correctAnswer[key]) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+            
+            if (isCorrect) {
+                score += 100;
+                document.getElementById('score').textContent = score;
+                showFeedback(true, level.feedback.success);
+            } else {
+                showFeedback(false, level.feedback.error);
+            }
+        }
+        
+        // Mostrar retroalimentación
+        function showFeedback(isSuccess, message) {
+            const overlay = document.getElementById('feedbackOverlay');
+            const icon = document.getElementById('feedbackIcon');
+            const title = document.getElementById('feedbackTitle');
+            const messageElement = document.getElementById('feedbackMessage');
+            
+            if (isSuccess) {
+                icon.textContent = 'check_circle';
+                icon.className = 'material-icons feedback-icon success';
+                title.textContent = '¡Excelente!';
+            } else {
+                icon.textContent = 'error';
+                icon.className = 'material-icons feedback-icon error';
+                title.textContent = 'Intenta de nuevo';
+            }
+            
+            messageElement.textContent = message;
+            overlay.style.display = 'flex';
+        }
+        
+        // Siguiente nivel
+        function nextLevel() {
+            document.getElementById('feedbackOverlay').style.display = 'none';
+            
+            currentLevel++;
+            
+            if (currentLevel < gameData.length) {
+                loadLevel(currentLevel);
+            } else {
+                // Fin del juego
+                showGameComplete();
+            }
+        }
+        
+        // Mostrar pantalla de fin de juego
+        function showGameComplete() {
+            const overlay = document.getElementById('feedbackOverlay');
+            const icon = document.getElementById('feedbackIcon');
+            const title = document.getElementById('feedbackTitle');
+            const messageElement = document.getElementById('feedbackMessage');
+            const button = document.querySelector('.feedback-button');
+            
+            icon.textContent = 'emoji_events';
+            icon.className = 'material-icons feedback-icon success';
+            title.textContent = '¡Juego Completado!';
+            messageElement.textContent = `¡Felicidades! Has completado todos los niveles con una puntuación de ${score} puntos. Ahora eres un experto en crear bandas sonoras con AIMusicGen.ai.`;
+            button.textContent = 'Jugar de Nuevo';
+            button.onclick = resetGame;
+            
+            overlay.style.display = 'flex';
+        }
+        
+        // Reiniciar juego
+        function resetGame() {
+            currentLevel = 0;
+            score = 0;
+            document.getElementById('score').textContent = score;
+            document.getElementById('feedbackOverlay').style.display = 'none';
+            loadLevel(currentLevel);
+        }
+        
+        // Mostrar/ocultar pista
+        function toggleHint() {
+            const tooltip = document.getElementById('hintTooltip');
+            tooltip.classList.toggle('show');
+        }
+        
+        // Smooth scrolling para enlaces de navegación
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Inicializar el juego cuando se carga la página
+        window.onload = initGame;
+    </script>
+</body>
+</html>
